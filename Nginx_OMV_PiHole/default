@@ -1,0 +1,49 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    set $dom /var/www/html;
+
+    if ($host ~ pihole.lan){
+        set $dom /var/www/html;
+    }
+
+    root $dom;
+
+
+    server_name pihole.lan;
+    autoindex off;
+
+    index pihole/index.php index.php index.html index.htm;
+
+    location / {
+        rewrite ^(.*)$ admin;
+    }
+
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
+        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        fastcgi_param FQDN true;
+    }
+
+    location /*.js {
+        index pihole/index.js;
+    }
+
+    location /admin {
+        set $dom2 /var/www/html;
+
+        if ($host ~ pihole.lan){
+            set $dom2 /var/www/html;
+        }
+
+        root $dom2;
+
+        index index.php index.html index.htm;
+    }
+
+        location ~ /\.ht {
+                deny all;
+        }
+}
