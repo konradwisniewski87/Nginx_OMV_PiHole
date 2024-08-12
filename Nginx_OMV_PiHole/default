@@ -2,23 +2,18 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    set $dom /var/www/html;
+
+    set $dom /var/www/html/admin;
 
     if ($host ~ pihole.lan){
-        set $dom /var/www/html;
+        set $dom /var/www/html/admin;
     }
 
     root $dom;
 
-
+    index index.php index.html;
     server_name pihole.lan;
     autoindex off;
-
-    index pihole/index.php index.php index.html index.htm;
-
-    location / {
-        rewrite ^(.*)$ admin;
-    }
 
     location ~ \.php$ {
         include fastcgi_params;
@@ -29,18 +24,6 @@ server {
 
     location /*.js {
         index pihole/index.js;
-    }
-
-    location /admin {
-        set $dom2 /var/www/html;
-
-        if ($host ~ pihole.lan){
-            set $dom2 /var/www/html;
-        }
-
-        root $dom2;
-
-        index index.php index.html index.htm;
     }
 
         location ~ /\.ht {
