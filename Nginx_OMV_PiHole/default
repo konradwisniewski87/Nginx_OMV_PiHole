@@ -1,15 +1,19 @@
+map $host $path {
+    pihole.lan /var/www/html/admin;
+}
+
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
 
-    set $dom /var/www/html/admin;
+    #set $dom /var/www/html/admin;
 
-    if ($host ~ pihole.lan){
-        set $dom /var/www/html/admin;
-    }
+    #if ($host ~ pihole.lan){
+    #    set $dom /var/www/html/admin;
+    #}
 
-    root $dom;
+    root $path;
 
     index index.php index.html;
     server_name pihole.lan;
