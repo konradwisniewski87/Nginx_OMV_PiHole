@@ -2,6 +2,11 @@ map $host $path {
     pihole.lan /var/www/html/admin;
 }
 
+map $http_user_agent $bad_user {
+    default 0;
+    ~*bot* 1;
+}
+
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -29,6 +34,11 @@ server {
     #error_page 404 /error404.html;
     #error_page 503 /error504.html;
 
+    location / {
+        if ($bad_user){
+            return 403;
+        }
+    }
 
     location ~ \.php$ {
         include fastcgi_params;
