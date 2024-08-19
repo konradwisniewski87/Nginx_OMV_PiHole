@@ -13,7 +13,11 @@ server {
 
     index index.php index.html;
     server_name pihole.lan;
+
     autoindex off;
+    #location /file {
+    #    limit_rate 50 k;
+    #}
 
     location ~ \.php$ {
         include fastcgi_params;
