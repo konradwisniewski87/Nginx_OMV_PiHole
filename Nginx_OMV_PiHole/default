@@ -19,6 +19,13 @@ server {
     #    limit_rate 50 k;
     #}
 
+    #add_header X-Frame-Options "DENY";
+
+    #error_page 403 /error403.html;
+    #error_page 404 /error404.html;
+    #error_page 503 /error504.html;
+
+
     location ~ \.php$ {
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
